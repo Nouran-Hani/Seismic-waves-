@@ -5,6 +5,13 @@ import MoonModel from './moon/MoonModel';
 import MarsModel from './mars/marModel';
 
 export default function App() {
+
+  const [planet, setPlanet] = useState('moon'); // Default selected option
+
+  const handleOptionChange = (event) => {
+    setPlanet(event.target.value); // Update the selected option
+  };
+
   const [imageUrl, setImageUrl] = useState(null); // State to store image URL
 
   const uploadFile = () => {
@@ -34,13 +41,37 @@ export default function App() {
       <div style={styles.columnsContainer}>
         <div style={styles.columnLeft}>
           <main style={styles.main}>
-            <input type="file" id="fileInput" style={styles.fileInput} />
-            <button onClick={uploadFile} style={styles.uploadButton}>Upload</button>
+            <input type="file" id="fileInput" style={{...styles.input, marginRight: 10}} />
+            <button onClick={uploadFile} style={styles.input}>Upload</button>
+
+            <div>
+              <label style={styles.label}>
+                <input
+                  type="radio"
+                  value="moon"
+                  checked={planet === 'moon'}
+                  onChange={handleOptionChange}
+                />
+                Moon
+              </label>
+
+              <label style={styles.label}>
+                <input
+                  type="radio"
+                  value="mars"
+                  checked={planet === 'mars'}
+                  onChange={handleOptionChange}
+                />
+                Mars
+              </label>
+            </div>
+
             {imageUrl && <img id="image" alt="Uploaded" src={imageUrl} />}
           </main>
         </div>
         <div style={styles.columnRight}>
-          <MarsModel />
+          {planet === 'moon' ? <MoonModel/>
+          : <MarsModel/>}
         </div>
       </div>
     </div>
@@ -50,58 +81,54 @@ export default function App() {
 // Styles for layout
 const styles = {
   container: {
-    height: '100vh', // Use 100vh to cover the full height of the viewport
-    width: '100vw', // Use 100vw to cover the full width of the viewport
-    position: 'absolute', // Ensure it covers the entire screen without any other containers affecting it
-    top: 0, // Positioning
-    left: 0, // Positioning
+    height: '100vh',
+    width: '100vw',
+    position: 'absolute',
+    top: 0,
+    left: 0,
     backgroundImage: "url('//unpkg.com/three-globe/example/img/night-sky.png')",
-    backgroundSize: 'cover', // Cover the entire container with the background image
-    backgroundPosition: 'center', // Center the background image
-    backgroundRepeat: 'no-repeat', // Prevent repetition of the image
-    zIndex: -1, // Optional: Send it behind other content
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    zIndex: -1,
   },
+
   columnsContainer: {
     display: 'flex',
     flex: 1, // Make the container take the full remaining space
   },
+
   columnLeft: {
-    flex: 1, // 50% of the screen
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    // alignItems: 'center'
   },
+
   columnRight: {
-    flex: 1, // 50% of the screen
-    // padding: '20px',
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    border: '3px solid yellow',
-    height: '100vh',
+    border: '2px solid rgba(1, 14, 54, 0.5)',
+    height: '99vh',
   },
   main: {
-    marginLeft: 10,
+    marginLeft: 15,
     paddingTop: "100px",
-
   },
-  fileInput: {
-    backgroundColor: '#a7b1cf',
+  input: {
+    marginLeft: 15,
+    backgroundColor: 'rgba(167, 177, 207, 0.85)',
     padding: 5,
     fontSize: 15,
     color: '#010e36',
     fontWeight: 'bold',
     borderRadius: 10,
-    marginRight: 10
+    marginBottom: '10px'
   },
-  uploadButton: {
-    backgroundColor: '#a7b1cf',
-    padding: 5,
-    fontSize: 15,
-    color: '#010e36',
-    fontWeight: 'bold',
-    borderRadius: 10,
-    boxShadow: 'none'
+  
+  label: {
+    fontSize: 20,
+    color: '#fff',
+    margin: 20,
   }
 };

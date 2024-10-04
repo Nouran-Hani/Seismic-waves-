@@ -12,7 +12,7 @@ const colorScale = d3.scaleOrdinal([
   t => `rgba(255,42,4,${Math.sqrt(1 - t)})`
 ]);
 
-export default function MoonModel({ sentSpeed }) {
+export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentTime }) {
   const globeRef = useRef();
 
    // Function to handle vibration and play sound
@@ -44,22 +44,21 @@ export default function MoonModel({ sentSpeed }) {
       .showAtmosphere(true)
       .atmosphereColor("gray")
       .atmosphereAltitude(0.2)
-      .labelText(d => `${d.label}`)
+      // .labelText(d => `${d.label}`)
       .labelColor(() => "black")
       .labelSize(2.5)
       .labelDotRadius(0.3)
       .labelLabel(d => `
-        <div>Moonquake No. <b>${d.label}</b></div>
-        <div> Magnitude: <b>${d.magnitude}</b></div>
-        <div> Lat, Long: <b>${d.lat}</b>\u00B0, <b>${d.lng}</b>\u00B0</div>
-        <div>Date: <i>${new Date(d.date).toLocaleDateString()}</i></div>
-        <div>Time: <i>${d.time}</i></div>
+        <div> Magnitude: <b>${sentSpeed}</b></div>
+        <div> Lat, Long: <b>${sentLat}</b>\u00B0, <b>${sentLng}</b>\u00B0</div>
+        <div>Date: <i>${new Date(sentDate).toLocaleDateString()}</i></div>
+        <div>Time: <i>${sentTime}</i></div>
       `)
-      .onLabelClick(d => vibratepattern(d.magnitude, './vibrate_sound.wav'))
-      .ringColor(d => colorScale(d.scale))
-      .ringMaxRadius(d => 6 * (d.magnitude))
+      .onLabelClick(d => vibratepattern(sentSpeed, './vibrate_sound.wav'))
+      .ringColor(d => colorScale(sentSpeed)) // instead of the scale d.scale
+      .ringMaxRadius(d => 6 * (sentSpeed))
       .ringPropagationSpeed(d => 2)
-      .ringRepeatPeriod(d => 1 / (d.magnitude) * 200 + 100);
+      .ringRepeatPeriod(d => 1 / (sentSpeed) * 200 + 100);
 
     // Attach the globe to the DOM element
     moon(globeRef.current);

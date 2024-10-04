@@ -8,6 +8,10 @@ export default function App() {
 
   const [planet, setPlanet] = useState('moon'); // Default selected option
   const [speed, setSpeed] = useState('')
+  const [lat, setLat] = useState('')
+  const [lng, setLng] = useState('')
+  const [date, setDate] = useState('')
+  const [time, setTime] = useState('')
 
   const handleOptionChange = (event) => {
     setPlanet(event.target.value); // Update the selected option
@@ -22,7 +26,7 @@ export default function App() {
     formData.append('file', file);
 
     {planet === 'moon' ? 
-      (fetch('https://www.nasa.great-eagle.net/upload_mseed_moon', {
+      (fetch('https://www.nasa.great-eagle.net/upload_mseed_lunar', {
         method: 'POST',
         body: formData
       })
@@ -31,6 +35,11 @@ export default function App() {
         if (data.image) {
           setImageUrl('data:image/png;base64,' + data.image);
           setSpeed(data.speed)
+          setLat(data.lat)
+          setLng(data.lng)
+          setDate(data.date)
+          setTime(data.time)
+
         } else {
           console.error('Error:', data.error);
         }
@@ -46,6 +55,10 @@ export default function App() {
         if (data.image) {
           setImageUrl('data:image/png;base64,' + data.image);
           setSpeed(data.speed)
+          setLat(data.lat)
+          setLng(data.lng)
+          setDate(data.date)
+          setTime(data.time)
         } else {
           console.error('Error:', data.error);
         }
@@ -89,8 +102,8 @@ export default function App() {
           </main>
         </div>
         <div style={styles.columnRight}>
-          {planet === 'moon' ? <MoonModel sentSpeed={speed}/>
-          : <MarsModel sentSpeed={speed}/>}
+          {planet === 'moon' ? <MoonModel sentSpeed={speed} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time}/>
+          : <MarsModel sentSpeed={speed} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time}/>}
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import marsimg from './marsimg.jpg';
 // import nakamura from './nakamurasmlocations.json';
 // import * as d3 from 'd3'; // Ensure you import D3
 
-export default function MarsModel({ sentSpeed }) {
+export default function MarsModel({ sentSpeed, sentLat, sentLng, sentDate, sentTime }) {
   const globeRef = useRef();
 
   const marsModel = () => {

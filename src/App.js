@@ -1,8 +1,8 @@
 // App.js
 import React, { useState } from 'react';
 import Header from './components/header';
-import starsBG from './assets/images/starsBG.jpg';
-import MoonModel from './MoonModel';  // The component for the 3D Moon model
+import MoonModel from './moon/MoonModel';
+import MarsModel from './mars/marModel';
 
 export default function App() {
   const [imageUrl, setImageUrl] = useState(null); // State to store image URL
@@ -31,16 +31,17 @@ export default function App() {
   return (
     <div style={styles.container}>
       <Header />
-      <div style={styles.rightHalf}>
-        <main style={styles.main}>
-          <input type="file" id="fileInput" style={styles.fileInput} />
-          <button onClick={uploadFile} style={styles.uploadButton}>Upload</button>
-          {imageUrl && <img id="image" alt="Uploaded" src={imageUrl} />}
-        </main>
-      </div>
-      <div style={styles.leftHalf}>
-        {/* Integrate the 3D Moon Model */}
-        <MoonModel />
+      <div style={styles.columnsContainer}>
+        <div style={styles.columnLeft}>
+          <main style={styles.main}>
+            <input type="file" id="fileInput" style={styles.fileInput} />
+            <button onClick={uploadFile} style={styles.uploadButton}>Upload</button>
+            {imageUrl && <img id="image" alt="Uploaded" src={imageUrl} />}
+          </main>
+        </div>
+        <div style={styles.columnRight}>
+          <MarsModel />
+        </div>
       </div>
     </div>
   );
@@ -49,25 +50,41 @@ export default function App() {
 // Styles for layout
 const styles = {
   container: {
-    display: 'flex',
-    height: '100vh',
+    height: '100vh', // Use 100vh to cover the full height of the viewport
+    width: '100vw', // Use 100vw to cover the full width of the viewport
+    position: 'absolute', // Ensure it covers the entire screen without any other containers affecting it
+    top: 0, // Positioning
+    left: 0, // Positioning
     backgroundImage: "url('//unpkg.com/three-globe/example/img/night-sky.png')",
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: "no-repeat",
-    width: '100%'
+    backgroundSize: 'cover', // Cover the entire container with the background image
+    backgroundPosition: 'center', // Center the background image
+    backgroundRepeat: 'no-repeat', // Prevent repetition of the image
+    zIndex: -1, // Optional: Send it behind other content
   },
-  leftHalf: {
-    flex: 1, // 50% of the screen
-    backgroundColor: '#000', // Dark background for contrast
+  columnsContainer: {
+    display: 'flex',
+    flex: 1, // Make the container take the full remaining space
   },
-  rightHalf: {
+  columnLeft: {
     flex: 1, // 50% of the screen
-    padding: '20px',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    // alignItems: 'center'
+  },
+  columnRight: {
+    flex: 1, // 50% of the screen
+    // padding: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    border: '3px solid yellow',
+    height: '100vh',
   },
   main: {
-    paddingTop: "100px",
     marginLeft: 10,
+    paddingTop: "100px",
+
   },
   fileInput: {
     backgroundColor: '#a7b1cf',

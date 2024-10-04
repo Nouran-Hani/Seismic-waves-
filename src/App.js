@@ -7,6 +7,7 @@ import MarsModel from './mars/marModel';
 export default function App() {
 
   const [planet, setPlanet] = useState('moon'); // Default selected option
+  const [speed, setSpeed] = useState('')
 
   const handleOptionChange = (event) => {
     setPlanet(event.target.value); // Update the selected option
@@ -20,19 +21,37 @@ export default function App() {
     const formData = new FormData();
     formData.append('file', file);
 
-    fetch('https://www.nasa.great-eagle.net/upload_mseed', {
-      method: 'POST',
-      body: formData
-    })
+    {planet === 'moon' ? 
+      (fetch('https://www.nasa.great-eagle.net/upload_mseed_moon', {
+        method: 'POST',
+        body: formData
+      })
       .then(response => response.json())
       .then(data => {
         if (data.image) {
           setImageUrl('data:image/png;base64,' + data.image);
+          setSpeed(data.speed)
         } else {
           console.error('Error:', data.error);
         }
       })
-      .catch(error => console.error('Error:', error));
+      .catch(error => console.error('Error:', error)))
+
+      : (fetch('https://www.nasa.great-eagle.net/upload_mseed_mars', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.image) {
+          setImageUrl('data:image/png;base64,' + data.image);
+          setSpeed(data.speed)
+        } else {
+          console.error('Error:', data.error);
+        }
+      })
+      .catch(error => console.error('Error:', error))
+    )}
   };
 
   return (
@@ -70,8 +89,8 @@ export default function App() {
           </main>
         </div>
         <div style={styles.columnRight}>
-          {planet === 'moon' ? <MoonModel/>
-          : <MarsModel/>}
+          {planet === 'moon' ? <MoonModel sentSpeed={speed}/>
+          : <MarsModel sentSpeed={speed}/>}
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ const colorScale = d3.scaleOrdinal([
   t => `rgba(255,42,4,${Math.sqrt(1 - t)})`
 ]);
 
-export default function MoonModel() {
+export default function MoonModel({ sentSpeed }) {
   const globeRef = useRef();
 
    // Function to handle vibration and play sound

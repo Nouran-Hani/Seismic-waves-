@@ -162,5 +162,6 @@ const styles = {
     fontSize: 20,
     color: '#fff',
     margin: 20,
+    marginBottom: '10px'
   }
 };

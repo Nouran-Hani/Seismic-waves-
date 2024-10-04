@@ -25,7 +25,7 @@ const styles = {
     },
     title: {
         color: '#fff',
-        fontFamily: 'Courier',
+        // fontFamily: 'Courier',
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',

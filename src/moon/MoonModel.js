@@ -64,13 +64,13 @@ export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentT
     moon(globeRef.current);
 
     // Fetch the moonquake data from a public directory
-    fetch('./nakamurasmlocations.json')
-      .then(response => response.json())
-      .then(landingSites => {
-        moon.labelsData(landingSites);
-        moon.ringsData(landingSites);
-      })
-      .catch(err => console.error('Failed to load moonquake data:', err));
+    // fetch('./nakamurasmlocations.json')
+    //   .then(response => response.json())
+    //   .then(landingSites => {
+    //     moon.labelsData(landingSites);
+    //     moon.ringsData(landingSites);
+    //   })
+    //   .catch(err => console.error('Failed to load moonquake data:', err));
   }, []);
 
   return (

@@ -5,13 +5,12 @@ import MoonModel from './moon/MoonModel';
 import MarsModel from './mars/marModel';
 
 export default function App() {
-
   const [planet, setPlanet] = useState('moon'); // Default selected option
-  const [speed, setSpeed] = useState('')
-  const [lat, setLat] = useState('')
-  const [lng, setLng] = useState('')
-  const [date, setDate] = useState('')
-  const [time, setTime] = useState('')
+  const [speed, setSpeed] = useState('');
+  const [lat, setLat] = useState('');
+  const [lng, setLng] = useState('');
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('');
 
   const handleOptionChange = (event) => {
     setPlanet(event.target.value); // Update the selected option
@@ -25,8 +24,8 @@ export default function App() {
     const formData = new FormData();
     formData.append('file', file);
 
-    {planet === 'moon' ? 
-      (fetch('https://www.nasa.great-eagle.net/upload_mseed_lunar', {
+    if (planet === 'moon') {
+      fetch('https://www.nasa.great-eagle.net/upload_mseed_lunar', {
         method: 'POST',
         body: formData
       })
@@ -34,19 +33,18 @@ export default function App() {
       .then(data => {
         if (data.image) {
           setImageUrl('data:image/png;base64,' + data.image);
-          setSpeed(data.speed)
-          setLat(data.lat)
-          setLng(data.lng)
-          setDate(data.date)
-          setTime(data.time)
-          console.log(data)
+          setSpeed(data.speed);
+          setLat(data.lat);
+          setLng(data.lng);
+          setDate(data.date);
+          setTime(data.time);
         } else {
           console.error('Error:', data.error);
         }
       })
-      .catch(error => console.error('Error:', error)))
-
-      : (fetch('https://www.nasa.great-eagle.net/upload_mseed_mars', {
+      .catch(error => console.error('Error:', error));
+    } else {
+      fetch('https://www.nasa.great-eagle.net/upload_mseed_mars', {
         method: 'POST',
         body: formData
       })
@@ -54,18 +52,17 @@ export default function App() {
       .then(data => {
         if (data.image) {
           setImageUrl('data:image/png;base64,' + data.image);
-          setSpeed(data.speed)
-          setLat(data.lat)
-          setLng(data.lng)
-          setDate(data.date)
-          setTime(data.time)
-
+          setSpeed(data.speed);
+          setLat(data.lat);
+          setLng(data.lng);
+          setDate(data.date);
+          setTime(data.time);
         } else {
           console.error('Error:', data.error);
         }
       })
-      .catch(error => console.error('Error:', error))
-    )}
+      .catch(error => console.error('Error:', error));
+    }
   };
 
   return (
@@ -103,8 +100,11 @@ export default function App() {
           </main>
         </div>
         <div style={styles.columnRight}>
-          {planet === 'moon' ? <MoonModel sentSpeed={speed * -10e10} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time}/>
-          : <MarsModel sentSpeed={speed} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time}/>}
+          {planet === 'moon' ? 
+            <MoonModel sentSpeed={speed * 0.25e13} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time} /> 
+          : 
+            <MarsModel sentSpeed={speed * 0.25e13} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time} />
+          }
         </div>
       </div>
     </div>
@@ -125,18 +125,15 @@ const styles = {
     backgroundRepeat: 'no-repeat',
     zIndex: -1,
   },
-
   columnsContainer: {
     display: 'flex',
     flex: 1, // Make the container take the full remaining space
   },
-
   columnLeft: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
   },
-
   columnRight: {
     flex: 1,
     display: 'flex',
@@ -158,7 +155,6 @@ const styles = {
     borderRadius: 10,
     marginBottom: '10px'
   },
-  
   label: {
     fontSize: 20,
     color: '#fff',

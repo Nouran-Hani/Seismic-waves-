@@ -39,7 +39,7 @@ export default function App() {
           setLng(data.lng)
           setDate(data.date)
           setTime(data.time)
-
+          console.log(data)
         } else {
           console.error('Error:', data.error);
         }
@@ -59,6 +59,7 @@ export default function App() {
           setLng(data.lng)
           setDate(data.date)
           setTime(data.time)
+
         } else {
           console.error('Error:', data.error);
         }
@@ -102,7 +103,7 @@ export default function App() {
           </main>
         </div>
         <div style={styles.columnRight}>
-          {planet === 'moon' ? <MoonModel sentSpeed={speed} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time}/>
+          {planet === 'moon' ? <MoonModel sentSpeed={speed * -10e10} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time}/>
           : <MarsModel sentSpeed={speed} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time}/>}
         </div>
       </div>

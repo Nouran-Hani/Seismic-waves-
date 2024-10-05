@@ -13,6 +13,8 @@ const colorScale = d3.scaleOrdinal([
 ]);
 
 export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentTime }) {
+
+  console.log(sentSpeed, sentLat, sentLng, sentDate, sentTime)
   const globeRef = useRef();
 
    // Function to handle vibration and play sound
@@ -63,18 +65,48 @@ export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentT
     // Attach the globe to the DOM element
     moon(globeRef.current);
 
-    // Fetch the moonquake data from a public directory
-    // fetch('./nakamurasmlocations.json')
-    //   .then(response => response.json())
-    //   .then(landingSites => {
-    //     moon.labelsData(landingSites);
-    //     moon.ringsData(landingSites);
-    //   })
-    //   .catch(err => console.error('Failed to load moonquake data:', err));
+    const labels = {
+      "lat": sentLat,
+      "lng": sentLng,
+      "magnitude": sentSpeed,
+      "date": sentDate,
+      "time": sentTime,
+      "scale": 0
+    }
+
+    const rings = {
+      "lat": sentLat,
+      "lng": sentLng,
+      "magnitude": sentSpeed,
+      "scale": 0
+    }
+    const temp = [
+      {
+        "label": "1",
+        "magnitude": 4.5,
+        "lat": -3.6,
+        "lng": 22.4,
+        "date": "2023-05-15",
+        "time": "10:34:00"
+      },
+      {
+        "label": "2",
+        "magnitude": 5.2,
+        "lat": 8.4,
+        "lng": -12.1,
+        "date": "2023-06-20",
+        "time": "03:45:00"
+      }
+    ]
+    moon.labelsData([JSON.stringify(labels)]);
+    moon.ringsData([JSON.stringify(rings)]);
+
+    console.log('Label:', labels);
+    console.log('Ring:', rings);
   }, []);
 
   return (
     // Provide some height for the globe container
-    <div ref={globeRef} style={{ width: '100%', height: '100vh' }} />
+    <div ref={globeRef} />
   );
 }

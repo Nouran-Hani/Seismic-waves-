@@ -14,11 +14,23 @@ export default function App() {
 
   const handleOptionChange = (event) => {
     setPlanet(event.target.value); // Update the selected option
+    setImageUrl(null)
+    setSpeed(null);
+    setLat(null);
+    setLng(null);
+    setDate(null);
+    setTime(null);
   };
 
   const [imageUrl, setImageUrl] = useState(null); // State to store image URL
 
   const uploadFile = () => {
+    setImageUrl(null)
+    setSpeed(null);
+    setLat(null);
+    setLng(null);
+    setDate(null);
+    setTime(null);
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
     const formData = new FormData();
@@ -71,8 +83,23 @@ export default function App() {
       <div style={styles.columnsContainer}>
         <div style={styles.columnLeft}>
           <main style={styles.main}>
-            <input type="file" id="fileInput" style={{...styles.input, marginRight: 10}} />
-            <button onClick={uploadFile} style={styles.input}>Upload</button>
+            <input type="file" id="fileInput" 
+            style={{
+              ...styles.input, marginLeft: 10, 
+              backgroundColor: planet === 'moon' 
+                ? 'rgba(150, 150, 150, 0.75)' 
+                : 'rgba(209, 149, 92, 0.75)'
+            }} />
+            <button 
+              onClick={uploadFile} 
+              style={{
+                ...styles.input, 
+                backgroundColor: planet === 'moon' 
+                  ? 'rgba(150, 150, 150, 0.75)' 
+                  : 'rgba(209, 149, 92, 0.75)'
+              }}>
+              Upload
+            </button>
 
             <div>
               <label style={styles.label}>
@@ -95,15 +122,16 @@ export default function App() {
                 Mars
               </label>
             </div>
-
-            {imageUrl && <img id="image" alt="Uploaded" src={imageUrl} />}
+            <div style={{alignItems: 'center', justifyContent: 'center'}}>
+            {imageUrl && <img id="image" alt="Uploaded" src={imageUrl} style={styles.image} />}
+            </div>
           </main>
         </div>
         <div style={styles.columnRight}>
           {planet === 'moon' ? 
-            <MoonModel sentSpeed={speed * 0.25e13} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time} /> 
+            <MoonModel sentSpeed={speed * 1e10} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time} /> 
           : 
-            <MarsModel sentSpeed={speed * 0.25e13} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time} />
+            <MarsModel sentSpeed={speed * 1e13} sentLat={lat} sentLng={lng} sentDate={date} sentTime={time} />
           }
         </div>
       </div>
@@ -138,19 +166,23 @@ const styles = {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    border: '2px solid rgba(1, 14, 54, 0.5)',
-    height: '99vh',
+    // border: '2px solid rgba(1, 14, 54, 0.5)',
+    // height: '99vh',
   },
   main: {
     marginLeft: 15,
-    paddingTop: "100px",
+    paddingTop: "90px",
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   input: {
     marginLeft: 15,
-    backgroundColor: 'rgba(167, 177, 207, 0.85)',
+    // backgroundColor: 'rgba(167, 177, 207, 0.85)',
+    // backgroundColor: 'rgba(150, 150, 150, 0.75)',
     padding: 5,
     fontSize: 15,
-    color: '#010e36',
+    // color: '#010e36',
+    color: '#fff',
     fontWeight: 'bold',
     borderRadius: 10,
     marginBottom: '10px'
@@ -160,5 +192,8 @@ const styles = {
     color: '#fff',
     margin: 20,
     marginBottom: '10px'
+  },
+  image: {
+    width: '80%'
   }
 };

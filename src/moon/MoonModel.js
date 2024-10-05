@@ -36,15 +36,18 @@ export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentT
 
   useEffect(() => {
     const moon = Globe()
-    .width(637)
+    .width(window.innerWidth/2)
+    .height(window.innerHeight)
     .globeImageUrl(lroc)
     .bumpImageUrl(ldem)
-    .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+    .backgroundColor('rgba(0,0,0,0)')
+    // .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
     .showGraticules(false)
     .showAtmosphere(true)
     .atmosphereColor("gray")
     .atmosphereAltitude(0.2)
     .labelColor(() => "black")
+    .labelText(() => 'moonquake')
       .labelSize(2.5)
       .labelDotRadius(0.3)
       .labelLabel(() => `
@@ -53,11 +56,11 @@ export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentT
         <div>Date: <i>${new Date(sentDate).toLocaleDateString()}</i></div>
         <div>Time: <i>${sentTime}</i></div>
         `)
-        .onLabelClick(() => vibratepattern(sentSpeed, './vibrate_sound.wav'))
-        .ringColor(() => colorScale(sentSpeed))
-        .ringMaxRadius(() => 6 * sentSpeed)
-        .ringPropagationSpeed(() => 2)
-        .ringRepeatPeriod(() => 1 / sentSpeed * 200 + 100);
+        .onLabelClick(() => vibratepattern(sentSpeed, `${process.env.PUBLIC_URL}/vibrate_sound.wav`))
+        .ringColor(() => colorScale(Math.min(Math.max(sentSpeed, 0), 10)))
+        .ringMaxRadius(() => Math.min(10, 6 * sentSpeed))
+        .ringPropagationSpeed(() => Math.min(5, Math.max(1, sentSpeed)))
+        .ringRepeatPeriod(() => Math.max(100, (1 / sentSpeed) * 200 + 100));
         
         // Attach the globe to the DOM element
         moon(globeRef.current);
@@ -70,14 +73,14 @@ export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentT
       "magnitude": sentSpeed,
       "date": sentDate,
       "time": sentTime,
-      "scale": 0
     };
 
     const rings = {
       "lat": sentLat,
       "lng": sentLng,
       "magnitude": sentSpeed,
-      "scale": 0
+      "date": sentDate,
+      "time": sentTime,
     };
 
     moon.labelsData([labels]);
@@ -89,6 +92,7 @@ export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentT
   }
   }, [sentSpeed, sentLat, sentLng, sentDate, sentTime]);
   
+
   return (
     <div ref={globeRef} style={{ width: '100%', height: '100vh' }} />
   );

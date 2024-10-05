@@ -66,20 +66,27 @@ export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentT
     moon(globeRef.current);
 
     const labels = {
-      "lat": sentLat,
-      "lng": sentLng,
-      "magnitude": sentSpeed,
-      "date": sentDate,
-      "time": sentTime,
-      "scale": 0
-    }
-
+      lat: sentLat || 0, // Use default value if undefined
+      lng: sentLng || 0, // Use default value if undefined
+      magnitude: sentSpeed || 0, // Use default value if undefined
+      date: sentDate || new Date().toISOString(), // Fallback to current date if undefined
+      time: sentTime || new Date().toLocaleTimeString(), // Fallback to current time if undefined
+      scale: 0 // This might need to be adjusted based on your requirements
+    };
+  
     const rings = {
-      "lat": sentLat,
-      "lng": sentLng,
-      "magnitude": sentSpeed,
-      "scale": 0
-    }
+      lat: sentLat || 0, // Use default value if undefined
+      lng: sentLng || 0, // Use default value if undefined
+      magnitude: sentSpeed || 0, // Use default value if undefined
+      scale: 0 // This might need to be adjusted based on your requirements
+    };
+    
+    moon.labelsData([labels]);
+    moon.ringsData([rings]);
+
+    console.log('Label:', labels);
+    console.log('Ring:', rings);
+
     const temp = [
       {
         "label": "1",
@@ -98,11 +105,6 @@ export default function MoonModel({ sentSpeed, sentLat, sentLng, sentDate, sentT
         "time": "03:45:00"
       }
     ]
-    moon.labelsData([JSON.stringify(labels)]);
-    moon.ringsData([JSON.stringify(rings)]);
-
-    console.log('Label:', labels);
-    console.log('Ring:', rings);
   }, []);
 
   return (
